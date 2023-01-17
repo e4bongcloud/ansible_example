@@ -1,0 +1,23 @@
+- name: Check Docker status
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check if Docker is installed
+      command: which docker
+      register: docker_install_check
+      ignore_errors: true
+
+    - name: Print Docker not installed
+      debug:
+        msg: "Docker is not installed"
+      when: docker_install_check.rc != 0
+
+    - name: Get Docker status
+      command: systemctl status docker
+      when: docker_install_check.rc == 0
+      register: docker_status
+
+    - name: Print Docker status
+      debug:
+        msg: "Docker is {{ 'running' if (docker_status.stdout.find('active (running)') != -1) else 'not running' }}"
+      when: docker_install_check.rc == 0

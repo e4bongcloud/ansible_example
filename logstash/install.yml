@@ -1,0 +1,16 @@
+- name: Deploy beat configuration files
+  hosts: all
+  tasks:
+    - name: Download yml files from FTP server
+      command: curl -O --silent --user ftpuser:1234 ftp://10.11.1.2/upload/logstash_file/{{ item }}
+      with_items:
+        - auditbeat.yml
+        - filebeat.yml
+        - metricbeat.yml
+
+    - name: Copy yml files to /etc/auditbeat
+      command: mv /home/server/{{ item }}.yml /etc/{{ item }}/
+      with_items:
+        - auditbeat
+        - filebeat
+        - metricbeat

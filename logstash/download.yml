@@ -1,0 +1,15 @@
+- name: download and install packages
+  hosts: all
+  tasks:
+      - name: download and install packages
+        shell: "curl -O --silent --user ftpuser:1234 ftp://10.11.1.2/upload/{{ item }}.deb"
+        with_items:
+          - auditbeat-oss-8.4.3-amd64
+          - filebeat-oss-8.4.3-amd64
+          - metricbeat-oss-8.4.3-amd64
+      - name: install packages
+        shell: "dpkg -i /home/server/{{ item }}.deb"
+        with_items:
+          - auditbeat-oss-8.4.3-amd64
+          - filebeat-oss-8.4.3-amd64
+          - metricbeat-oss-8.4.3-amd64

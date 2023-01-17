@@ -1,0 +1,23 @@
+- name: Install the latest version of Docker
+  hosts: all
+  become: yes
+
+  roles:
+    - role: "nickjj.docker"
+      tags: ["docker"]
+      docker__edition: "ce"
+      docker__channel: ["stable"]
+      docker__version: ""
+      docker__state: "present"
+      docker__package_dependencies:
+        - "apt-transport-https"
+        - "ca-certificates"
+        - "cron"
+        - "gnupg2"
+        - "software-properties-common"
+      docker__apt_key_id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+      docker__apt_key_url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+      docker__apt_repository: >
+        deb [arch={{ docker__architecture_map[ansible_architecture] }}]
+        https://download.docker.com/linux/{{ ansible_distribution | lower }}
+        {{ ansible_distribution_release }} {{ docker__channel | join (' ') }}

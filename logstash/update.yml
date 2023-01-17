@@ -1,0 +1,15 @@
+- name: Deploy bea configuration files
+  hosts: all
+  tasks:
+    - name: Restart auditbeat service
+      service:
+        name: auditbeat
+        state: restarted
+    - name: Restart filebeat service
+      service:
+        name: filebeat
+        state: restarted
+    - name: Restart metricbeat service
+      service:
+        name: metricbeat
+        state: restarted

@@ -1,0 +1,8 @@
+---
+- name: Push SSH public key to client machines
+  hosts: all
+  tasks:
+    - name: Add public key to authorized keys
+      authorized_key:
+        user: "{{ ansible_user }}"
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
