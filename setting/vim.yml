@@ -1,0 +1,31 @@
+- hosts: all
+  become: true
+  strategy: free
+  gather_facts: no
+  tasks:
+  - name: delete vimrc setting
+    file:
+      path: /home/server/.vimrc
+      state: absent
+
+  - name: download vimrc setting
+    get_url:
+      url: "https://raw.githubusercontent.com/slowdodo/notes/main/tools_notes/editor/vim/vimrc"
+      dest: /home/server/.vimrc
+      mode: '0644'
+
+- hosts: all
+  become: true
+  strategy: free
+  gather_facts: no
+  tasks:
+  - name: delete vimrc setting
+    file:
+      path: /root/.vimrc
+      state: absent
+
+  - name: download vimrc setting
+    get_url:
+      url: "https://raw.githubusercontent.com/slowdodo/notes/main/tools_notes/editor/vim/vimrc"
+      dest: /root/.vimrc
+      mode: '0644'

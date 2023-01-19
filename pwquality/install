@@ -1,0 +1,8 @@
+---
+- name: basic secure package download and check
+  hosts: all
+  tasks:
+    - name: pwquality install
+      ansible.builtin.apt:
+        name: libpam-pwquality
+        state: present
