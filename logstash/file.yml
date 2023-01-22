@@ -1,29 +1,33 @@
 ---
-- hosts: all
-  tasks:
 - name: Deploy beat configuration files
   hosts: all
+  vars:
+    logstash:
+      - auditbeat
+      - filebeat
+      - metricbeat
   tasks:
   - name: Download yml file from FTP server
     command: curl -O --silent --user ftpuser:1234 ftp://10.11.1.2/upload/logstash_file/{{ item }}.yml
-  - name: Copy yml file
-    copy:
-      src: ./{{ item }}.yml
-      dest: /tmp/{{ item }}.yml
-  - name: Install yml file
-    dpkg:
-      name: /tmp/{{ item }}.yml
-      force: yes
+    loop: "{{ logstash }}"
   - name: Copy beat configuration files
     copy:
-      src: "{{ item }}"
-      dest: "/etc/auditbeat/{{ item }}"
+      src: "/home/server/{{ item }}.yml"
+      dest: "/etc/{{ item }}/{{ item }}.yml"
       mode: 0644
-    with_items:
-      - auditbeat.yml
-      - fields.yml
-      - metricbeat.yml
+    loop: "{{ logstash }}"
+
+  - name: Restart filebeat service
+    service:
+      state: restarted
+      name: filebeat 
+
+  - name: Restart metricbeat service
+    service:
+      state: restarted
+      name: metricbeat
+
   - name: Restart auditbeat service
     service:
-      name: auditbeat
       state: restarted
+      name: auditbeat
