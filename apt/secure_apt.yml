@@ -8,7 +8,7 @@
     - name: baic-utils-package
       ansible.builtin.apt:
         state: present
-        name: {{ item }}
+        name: "{{ item }}"
       loop:
         - ftp
         - vim
