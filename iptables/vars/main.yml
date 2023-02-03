@@ -1,0 +1,34 @@
+firewall_allowed_tcp_ports:
+  - "53"
+  - "80"
+  - "443"
+firewall_allowed_udp_ports:
+  - "53"
+
+firewall_additional_rules:
+# loopback
+- "iptables -A INPUT -A lo -j ACCEPT"
+- "iptables -A OUTPUT -o lo -j ACCEPT"
+
+# Private Network
+- "iptables -A INPUT -s 192.168.2.0/24,10.0.0.0/8,172.16.0.0/12 -j ACCEPT"
+- "iptables -A OUTPUT -d 192.168.2.0/24,10.0.0.0/8,172.16.0.0/12 -j ACCEPT"
+
+# DNS
+- "iptables -A INPUT -s 169.254.0.0/16 -j ACCEPT"
+- "iptables -A INPUT -d 169.254.0.0/16 -j ACCEPT"
+
+# WAN
+- "iptables -A INPUT -s 192.168.35.0/24 -j ACCEPT"
+- "iptables -A INPUT -d 192.168.35.0/24 -j ACCEPT"
+
+# Allow traffic for established connections
+- "iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT"
+
+# Logstash
+- "iptables -A INPUT -p tcp --dport 5044 -j ACCEPT"
+- "iptables -A OUTPUT -p tcp --dport 5044 -j ACCEPT"
+
+# REJECT AND DROP
+- "iptables -A INPUT -j DROP"
+- "iptables -A OUTPUT -j DROP"
