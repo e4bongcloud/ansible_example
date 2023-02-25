@@ -10,7 +10,7 @@
 
   - name: download vimrc setting
     get_url:
-      url: "https://raw.githubusercontent.com/slowdodo/notes/main/tools_notes/editor/vim/vimrc"
+      url: "https://raw.githubusercontent.com/e4bongcloud/notes/main/tools_notes/editor/vim/vimrc"
       dest: /home/server/.vimrc
       mode: '0644'
 
@@ -26,6 +26,6 @@
 
   - name: download vimrc setting
     get_url:
-      url: "https://raw.githubusercontent.com/slowdodo/notes/main/tools_notes/editor/vim/vimrc"
+      url: "https://raw.githubusercontent.com/e4bongcloud/notes/main/tools_notes/editor/vim/vimrc"
       dest: /root/.vimrc
       mode: '0644'
