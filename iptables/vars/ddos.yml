@@ -1,0 +1,10 @@
+# DDOS
+
+firewall_additional_rules:
+# HTTP
+- "iptables -I INPUT -p tcp -m state --state NEW --dport 80 -m connlimit --connlimit-above 10 --connlimit-mask 32 -j REJECT --reject-with tcp-reset"
+- "iptables -I INPUT -m state --state RELATED,ESTABLISHED -m limit --limit 10/second --limit-burst 12 -j ACCEPT"
+
+# SYN FLOOD
+- "iptables -I INPUT -s 192.168.2.0/24 -m connlimit --connlimit-above 3 -j DROP"
+- "iptables -I OUTPUT -d 192.168.2.0/24 -m connlimit --connlimit-above 3 -j DROP"
